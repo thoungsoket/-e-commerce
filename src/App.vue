@@ -1,13 +1,10 @@
-<script setup lang="ts">
-// import CategoryComponent from "@/components/CategoryComponent.vue";
-console.log("This should be no error")
-</script>
+<script setup lang="ts"></script>
 
 <template>
 
   <main>
-    <!--    <CategoryComponent/>-->
-    <h1 style="color: lightskyblue ">This is my first VueJs project</h1>
+        <CategoryComponent/>
+    <PosterComponent/>
   </main>
 </template>
 
