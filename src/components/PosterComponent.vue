@@ -17,10 +17,10 @@ class PosterItem {
 }
 
 const item_poster: PosterItem[] = [
-  new PosterItem("imgs/cate_item_1.png", "Poster 1 with the item short description", "Button", "red", "white"),
-  new PosterItem("imgs/cate_item_1.png", "Poster 1 with the item short description", "Button", "red", "white"),
-  new PosterItem("imgs/cate_item_1.png", "Poster 1 with the item short description", "Button", "red", "white"),
-  new PosterItem("imgs/cate_item_1.png", "Poster 1 with the item short description", "Button", "red", "white"),
+  new PosterItem("imgs/cate_item_4.png", "Everyday fresh & clean with our product", "Button", "red", "white"),
+  new PosterItem("imgs/cate_item_5.png", "Make your breakfast healthy and easy", "Button", "red", "white"),
+  new PosterItem("imgs/cate_item_1.png", "The best organic product online from our store", "Button", "red", "white"),
+  new PosterItem("imgs/cate_item_6.png", "Fruit is the best choice for our health", "Button", "red", "white"),
 ]
 
 </script>
