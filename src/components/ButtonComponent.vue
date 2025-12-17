@@ -1,34 +1,25 @@
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <button class="poster_btt" :style="{ '--bg': 'red', '--hover': 'blue' }">
-    <span class="poster_btt_label">Shop Now</span>
-    <img class="poster_btt_icon" src="/right-arrow.png" alt="Poster image">
+  <button class="poster_btt">
+    <span>Shop Now</span>
+    <img src="/right-arrow.png" class="poster_btt_icon" />
   </button>
 </template>
 
 <style scoped>
-.poster_btt{
-  height: 40px;
-  min-width: 120px;
-  align-content: center;
-  align-items: center;
-  background-color: var(--bg);
+.poster_btt {
+  background: red;
   color: white;
+  padding: 8px 16px;
   border-radius: 8px;
-  padding: 8px 12px;
-  font-size: 13px;
-  font-weight: bold;
-  cursor: pointer;
   border: none;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }
-
-.poster_btt_icon{
+.poster_btt_icon {
   margin-left: 8px;
-  width: 20%;
-  height: 20%;
+  width: 14px;
 }
-
 </style>
