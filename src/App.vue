@@ -1,59 +1,59 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
-import axios from "axios";
+import { onMounted, computed, ref } from "vue"
+import { useProductStore } from "./stores/productStore"
 
-import CategoryComponent from "./components/CategoryComponent.vue";
-import PosterComponent from "./components/PosterComponent.vue";
+import CategoryComponent from "./components/CategoryComponent.vue"
+import PosterComponent from "./components/PosterComponent.vue"
+import ProductComponent from "./components/ProductComponent.vue"
+import MenuComponent from "./components/MenuComponent.vue"
 
-// ---- TYPES ----
-interface Category {
-  id: number;
-  name: string;
-  image: string;
-  productCount: number;
-  color: string;
-  hoverColor: string;   // <<< FIXED HERE
-}
+const store = useProductStore()
+const currentGroup = ref("All")
 
-interface Promotion {
-  id: number;
-  title: string;
-  image: string;
-  color: string;
-  buttonColor: string;
-  bgColor: string;
-}
+const categories = computed(() => store.categories)
+const promotions = computed(() => store.promotions)
 
+// menu groups
+const menuGroups = computed(() => [
+  "All",
+  ...new Set(store.products.map((p: any) => p.group))
+])
 
-// ---- REFS ----
-const categories = ref<Category[]>([]);
-const promotions = ref<Promotion[]>([]);
+// popular products
+const popularProducts = computed(() =>
+  store.getPopularProducts
+)
 
-// ---- API CALLS ----
-async function fetchCategories() {
-  const res = await axios.get<Category[]>("http://localhost:3000/api/categories");
-  categories.value = res.data;
-}
+// products filtered by menu
+const filteredProducts = computed(() =>
+  currentGroup.value === "All"
+    ? popularProducts.value
+    : store.products.filter((p: any) => p.group === currentGroup.value)
+)
 
-async function fetchPromotions() {
-  const res = await axios.get<Promotion[]>("http://localhost:3000/api/promotions");
-  promotions.value = res.data;
-}
-
-// ---- EVENT ----
-function shopNow(promo: Promotion) {
-  alert(`Let's shop ${promo.title}`);
-}
-
-// ---- LIFECYCLE ----
 onMounted(() => {
-  fetchCategories();
-  fetchPromotions();
-});
+  store.loadAll()
+})
+
+function shopNow(promo: any) {
+  alert(`Let's shop ${promo.title}`)
+}
 </script>
+
 
 <template>
   <main>
+    <!-- Featured Categories Header -->
+<div class="section_header">
+  <h2 class="section_title">Featured Categories</h2>
+
+  <MenuComponent
+    :groups="menuGroups"
+    :activeGroup="currentGroup"
+    @change="currentGroup = $event"
+  />
+</div>
+    <!-- Categories -->
     <div class="category_list">
       <CategoryComponent
         v-for="c in categories"
@@ -61,48 +61,88 @@ onMounted(() => {
         :img="c.image"
         :name="c.name"
         :count="c.productCount"
-        :prefix="'item(s)'"
+        prefix="item(s)"
         :color="c.color"
-        :hover="c.hoverColor"
+        :hoverColor="c.hoverColor"
       />
     </div>
 
+    <!-- Promotions -->
     <div class="poster_list">
       <PosterComponent
         v-for="p in promotions"
         :key="p.id"
         :img="p.image"
         :title="p.title"
-        :data="p"
         :buttonColor="p.buttonColor"
         :bgColor="p.color"
         @shop="shopNow"
       />
     </div>
+
+    <!-- Popular Products Header -->
+    <div class="section_header">
+      <h2 class="section_title">Popular Products</h2>
+
+      <MenuComponent
+        :groups="menuGroups"
+        :activeGroup="currentGroup"
+        @change="currentGroup = $event"
+      />
+    </div>
+
+    <!-- Products -->
+    <div class="product_grid">
+      <ProductComponent
+        v-for="p in filteredProducts"
+        :key="p.id"
+        :product="p"
+      />
+    </div>
   </main>
 </template>
+
+
 
 <style>
 .category_list {
   display: flex;
-  flex-direction: row;
   justify-content: center;
-  align-items: center;
   gap: 25px;
-
   padding: 30px 0;
-  flex-wrap: nowrap; /* IMPORTANT → KEEP IN ONE LINE */
-  overflow-x: auto;  /* Allow scroll if too many */
-  scrollbar-width: none; /* Hide scroll bar */
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.category_list::-webkit-scrollbar {
+  display: none;
 }
 
-.category_list::-webkit-scrollbar {
-  display: none; /* Hide scroll bar for Chrome */
-}
 .poster_list {
   display: flex;
   justify-content: center;
   gap: 25px;
   padding: 20px 0;
 }
+
+
+.section_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 40px 0 20px;
+}
+
+.section_title {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.product_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 20px;
+  padding-bottom: 40px;
+}
+
+
 </style>
