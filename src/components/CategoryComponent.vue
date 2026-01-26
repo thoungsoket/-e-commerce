@@ -17,7 +17,7 @@ defineProps({
     class="category_btt"
     :style="{ '--bg': color, '--hover': hoverColor }"
   >
-    <img class="category_img" :src="img" alt="Category image" />
+    <img class="category_img" :src="`http://localhost:3000/${img}`"/>
     <span class="category_name">{{ name }}</span>
     <span class="category_count">{{ count }} {{ prefix }}</span>
   </button>

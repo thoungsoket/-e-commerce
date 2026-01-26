@@ -22,7 +22,8 @@ defineProps<{
       />
     </div>
 
-    <img class="poster_img" :src="img" />
+    <img class="poster_img" :src="`http://localhost:3000/${img}`" />
+
   </div>
 </template>
 
